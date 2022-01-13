@@ -156,8 +156,7 @@ def encode_dir(dataset_dir, walker, source, direction):
                             str(coordinate_mapping[source - 1][1]),
                             'walker_' + str(coordinate_mapping[walker - 1][0]) + '_1_' +
                             str(coordinate_mapping[walker - 1][1]), str(direction))
-    if not os.path.exists(save_dir):
-        os.makedirs(save_dir)
+    os.makedirs(save_dir, exist_ok=True)
     save_path = os.path.join(save_dir, 'record.wav')
     
     return save_dir, save_path

@@ -232,7 +232,7 @@ def extract_nb_from_str(str):
     return list(map(int, res))
 
 
-def get_files_by_suffix(root, suffix):
+def get_files_by_suffix(root, suffix=''):
     if isinstance(suffix, str):
         suffix = (suffix,)
     else:
@@ -247,7 +247,7 @@ def get_files_by_suffix(root, suffix):
     return file_list
 
 
-def get_files_by_prefix(root, prefix):
+def get_files_by_prefix(root, prefix=''):
     if isinstance(prefix, str):
         prefix = (prefix,)
     else:
@@ -262,7 +262,7 @@ def get_files_by_prefix(root, prefix):
     return file_list
 
 
-def get_dirs_by_suffix(root, suffix):
+def get_dirs_by_suffix(root, suffix=''):
     if isinstance(suffix, str):
         suffix = (suffix,)
     else:
@@ -277,7 +277,7 @@ def get_dirs_by_suffix(root, suffix):
     return dir_list
 
 
-def get_dirs_by_prefix(root, prefix):
+def get_dirs_by_prefix(root, prefix=''):
     if isinstance(prefix, str):
         prefix = (prefix,)
     else:
@@ -289,6 +289,67 @@ def get_dirs_by_prefix(root, prefix):
             if d.startswith(prefix):
                 path = os.path.normpath(os.path.join(parent, d))
                 dir_list.append(path)
+    return dir_list
+
+
+def get_subfiles_by_suffix(root, suffix=''):
+    if isinstance(suffix, str):
+        suffix = (suffix,)
+    else:
+        suffix = tuple(suffix)
+    
+    file_list = []
+    for file_basename in os.listdir(root):
+        fpath = os.path.join(root, file_basename)
+        if os.path.isfile(fpath) and file_basename.endswith(suffix):
+            # img: (('.jpg', '.bmp', '.dib', '.png', '.jpg', '.jpeg', '.pbm', '.pgm', '.ppm', '.tif', '.tiff')):
+            path = os.path.normpath(fpath)
+            file_list.append(path)
+    return file_list
+
+
+def get_subfiles_by_prefix(root, prefix=''):
+    if isinstance(prefix, str):
+        prefix = (prefix,)
+    else:
+        prefix = tuple(prefix)
+    
+    file_list = []
+    for file_basename in os.listdir(root):
+        fpath = os.path.join(root, file_basename)
+        if os.path.isfile(fpath) and file_basename.startswith(prefix):
+            path = os.path.normpath(fpath)
+            file_list.append(path)
+    return file_list
+
+
+def get_subdirs_by_suffix(root, suffix=''):
+    if isinstance(suffix, str):
+        suffix = (suffix,)
+    else:
+        suffix = tuple(suffix)
+    
+    dir_list = []
+    for dir_basename in os.listdir(root):
+        dpath = os.path.join(root, dir_basename)
+        if os.path.isdir(dpath) and dir_basename.endswith(suffix):
+            path = os.path.normpath(dpath)
+            dir_list.append(path)
+    return dir_list
+
+
+def get_subdirs_by_prefix(root, prefix=''):
+    if isinstance(prefix, str):
+        prefix = (prefix,)
+    else:
+        prefix = tuple(prefix)
+    
+    dir_list = []
+    for dir_basename in os.listdir(root):
+        dpath = os.path.join(root, dir_basename)
+        if os.path.isdir(dpath) and dir_basename.startswith(prefix):
+            path = os.path.normpath(dpath)
+            dir_list.append(path)
     return dir_list
 
 

@@ -9,8 +9,6 @@ import ns_featurelib
 
 
 class NSnet2Enhancer(object):
-    """NSnet2 enhancer class."""
-    
     def __init__(self, modelfile, cfg=None):
         """Instantiate NSnet2 given a trained model path."""
         self.cfg = {
@@ -22,9 +20,8 @@ class NSnet2Enhancer(object):
         }
         self.frameShift = float(self.cfg['winlen']) * float(self.cfg["hopfrac"])
         self.fs = int(self.cfg['fs'])
-        self.Nfft = int(float(self.cfg['winlen']) * self.fs)
-        self.mingain = 10 ** (self.cfg['mingain'] / 20)
-        
+        self.Nfft = int(float(self.cfg['winlen']) * self.fs)  # 320
+        self.mingain = 10 ** (self.cfg['mingain'] / 20)  # 0.0001
         """load onnx model"""
         self.ort = ort.InferenceSession(modelfile)
         self.dtype = np.float32
@@ -41,7 +38,7 @@ class NSnet2Enhancer(object):
         """Enhance a single Audio signal."""
         assert inFs == self.fs, "Inconsistent sampling rate!"
         
-        inputSpec = ns_featurelib.calcSpec(sigIn, self.cfg)
+        inputSpec = ns_featurelib.calcSpec(sigIn, self.cfg)  # complex spectral
         inputFeature = ns_featurelib.calcFeat(inputSpec, self.cfg)
         # shape: [batch x time x freq]
         inputFeature = np.expand_dims(np.transpose(inputFeature), axis=0)
@@ -60,11 +57,6 @@ class NSnet2Enhancer(object):
         return sigOut
 
 
-"""
-    Inference script for NSnet2 baseline.
-"""
-
-
 def load_onnx_model(model_path='./ns_nsnet2-20ms-baseline.onnx'):
     # check model path
     assert os.path.exists(model_path)
@@ -78,8 +70,21 @@ def load_onnx_model(model_path='./ns_nsnet2-20ms-baseline.onnx'):
 
 
 def denoise_nsnet2(audio=None, fs=None, audio_ipath=None, audio_opath=None, model=None, model_name=None, ):
+    '''
+    denoise audio with model
+    And audio_ipath enjoys higher priority than (audio, fs)
+    :param audio:
+    :param fs:
+    :param audio_ipath:
+    :param audio_opath:
+    :param model:
+    :param model_name:
+    :return:
+    '''
     if audio_ipath is not None:
         audio, fs, = sf.read(audio_ipath)
+        if audio is not None:
+            print('Warning: audio and fs will be ignored due to the existence of audio_ipath')
     
     if len(audio.shape) > 1:  # if >= one channel, only select the first channel
         audio = audio[:, 0]
@@ -95,8 +100,8 @@ def denoise_nsnet2(audio=None, fs=None, audio_ipath=None, audio_opath=None, mode
 
 if __name__ == '__main__':
     model, _ = load_onnx_model()
+    audio = np.zeros((16000,))
     
-    audio_ipath = '../dataset/hole/1s_16000/ini/src_-2_-4_rl/walker_-1.0_1_-2.0_315/walker_-1.0_1_-2.0_315_mic1_seg20.wav'
-    audio_opath = '../dataset/hole/1s_16000/test/walker_-1.0_1_-2.0_315_mic1_seg20.wav'
+    y = denoise_nsnet2(audio=audio, fs=16000, model=model, )
     
-    denoise_nsnet2(audio_ipath=audio_ipath, audio_opath=audio_opath, model=model, )
+    print(len(y))

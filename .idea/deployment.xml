@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="swang@127.0.0.1:6000 password (4)" createEmptyFolders="true" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" autoUpload="Always" serverName="swang@net-g14" createEmptyFolders="true" remoteFilesAllowedToDisappearOnAutoupload="false" showAutoUploadSettingsWarning="false">
     <serverData>
-      <paths name="swang@127.0.0.1:6000 password (4)">
+      <paths name="swang@net-g10">
         <serverdata>
           <mappings>
-            <mapping deploy="/SmartWalker/collect_dataset" local="$PROJECT_DIR$" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="swang@net-g14">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/SmartWalker/collect_preprocess_dataset" local="$PROJECT_DIR$" web="/" />
           </mappings>
           <excludedPaths>
-            <excludedPath path="/SmartWalker/collect_dataset/dataset" />
+            <excludedPath path="/SmartWalker/collect_preprocess_dataset/dataset" />
+            <excludedPath local="true" path="$PROJECT_DIR$/dataset" />
           </excludedPaths>
         </serverdata>
       </paths>
