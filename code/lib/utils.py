@@ -8,6 +8,13 @@ import cv2
 
 
 def add_prefix_and_suffix_4_basename(path, prefix=None, suffix=None):
+    '''
+    add prefix and/or suffix string(s) to a path's basename
+    :param path:
+    :param prefix:
+    :param suffix:
+    :return:
+    '''
     dir_path, basename = os.path.split(path)
     filename, ext = os.path.splitext(basename)
     filename = str(prefix if prefix is not None else '') + filename + str(suffix if suffix is not None else '') + ext
